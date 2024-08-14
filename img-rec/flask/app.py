@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # Load YOLOv8 model
 
-global label_counter
+global label_counter, img_counter
 # Initialize directories and files
 LABELS_FOLDER = 'train/labels'
 IMAGE_FOLDER = 'train/images'
@@ -36,6 +36,8 @@ if not os.path.isfile(COUNTER_FILE):
 # Read the initial label counter
 with open(COUNTER_FILE, 'r') as counter_file:
     label_counter = int(counter_file.read().strip())
+    img_counter = label_counter
+    
 
 # Initialize video capture
 cap = cv2.VideoCapture(0)
@@ -80,7 +82,7 @@ else:
     latest_file = max(files, key=os.path.getmtime)
     model = YOLO(latest_file)
     print(latest_file)
-
+model = YOLO('yolov8n.pt')
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory(IMAGE_FOLDER, filename)
@@ -109,7 +111,7 @@ def detect_objects(frame):
 @app.route('/label_studio_webhook', methods=['POST'])
 def label_studio_webhook():
     
-    global label_counter  # Declare label_counter as global
+    global img_counter  # Declare label_counter as global
     try:
         data = request.json
         annotation = data.get('annotation')
@@ -137,14 +139,15 @@ def label_studio_webhook():
 
                 yolo_labels.append(f"{class_number} {x_center} {y_center} {width} {height}\n")
                 print(f"{class_number} {x_center} {y_center} {width} {height}\n")
-            label_path = os.path.join(LABELS_FOLDER, f"{label_counter}.txt")
+            label_path = os.path.join(LABELS_FOLDER, f"{img_counter}.txt")
             with open(label_path, 'w') as label_file:
                 label_file.writelines(yolo_labels)
 
             # Update label counter and write to file
-            label_counter += 1
-            with open(COUNTER_FILE, 'w') as counter_file:
-                counter_file.write(str(label_counter))
+            img_counter += 1
+            
+            # with open(COUNTER_FILE, 'w') as counter_file:
+            #     counter_file.write(str(label_counter))
 
             return jsonify({'status': 'success'}), 200
         else:
@@ -189,7 +192,7 @@ def retrain():
 
 
 def detection_loop():
-    global is_detecting, is_training
+    global is_detecting, is_training, label_counter
     while is_detecting:
         
         success, frame = cap.read()
