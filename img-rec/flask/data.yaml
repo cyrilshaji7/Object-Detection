@@ -1,5 +1,5 @@
-train: C:\Users\Cyril\Desktop\img-rec\train
-val: C:\Users\Cyril\Desktop\img-rec\train
+train: img-rec\train
+val: img-rec\train
 #val: dataset/images/val
 
 nc: 80  # Number of classes (adjust this to match your dataset)
