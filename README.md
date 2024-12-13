@@ -196,6 +196,9 @@ If you installed Docker, you can use it to run the application in a containerize
 
 ## 7. Usage
 
+![image](https://github.com/user-attachments/assets/cbce7f3a-0455-483b-977c-be963460d3f1)
+
+
 ### 7.1. Object Detection
 
 1. Navigate to the main page of the application.
