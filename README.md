@@ -198,6 +198,13 @@ If you installed Docker, you can use it to run the application in a containerize
 
 ![image](https://github.com/user-attachments/assets/cbce7f3a-0455-483b-977c-be963460d3f1)
 
+- Detection Interval Timer: Displays and allows you to set the time interval for detection cycles.
+- Detection FPS: Shows and allows you to set the frames per second at which detections are being processed.
+- Object Class and Time Table: Logs for detected object classes and their timestamps.
+- Retrain: Allows retraining of the detection model with new data.
+- Download Report: Enables downloading a detailed detection report.
+- Pause Detection: Temporarily halts the detection process.
+- Live Detection Viewer: Shows the real-time detection of objects in a video feed.
 
 ### 7.1. Object Detection
 
